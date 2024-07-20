@@ -13,13 +13,11 @@ Given('User navigates to the application', async function () {
 
   Given('User enters the username as {string}', async function (username) {
     await page.locator('#username').fill(username)
-    //await page.fill('#username', username);
 
   });
 
   Given('User enters the password as {string}', async function (password) {
     await page.locator('#password').fill(password)
-    //await page.fill('#password', password);
 
   });
 
@@ -36,7 +34,7 @@ Given('User navigates to the application', async function () {
 
   });
 
-  When('Login should fail', async function () {
+  Then('Login should fail', async function () {
     await page.waitForSelector('#flash');
     const message = await page.textContent('#flash');
     expect(message).toContain('Your password is invalid!');
