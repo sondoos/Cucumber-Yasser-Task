@@ -7,6 +7,7 @@ let page:Page;
 Given('User navigates to the application', async function () {
   browser = await chromium.launch({headless:false});
   page = await browser.newPage();
+  await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto('https://the-internet.herokuapp.com/login');
  
   });
