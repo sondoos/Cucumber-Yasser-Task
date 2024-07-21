@@ -1,44 +1,33 @@
 import {Given, When,Then} from "@cucumber/cucumber"
 import {chromium, Page,Browser, expect} from "@playwright/test"
+import { pageFixture } from "../../hooks/pageFixture";
 
-let browser:Browser;
-let page:Page;
 
-Given('User navigates to the application', async function () {
-  browser = await chromium.launch({headless:false});
-  page = await browser.newPage();
-  await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto('https://the-internet.herokuapp.com/login');
- 
+Given('User navigates to the application',{ timeout: 60000 }, async function () {
+    await pageFixture.page.goto('https://bookcart.azurewebsites.net/');
   });
-
-  Given('User enters the username as {string}', async function (username) {
-    await page.locator('#username').fill(username)
+  Given('User Opens Login page',{ timeout: 60000 }, async function () {
+    await pageFixture.page.locator("//span[text()=' Login ']").click();
 
   });
 
-  Given('User enters the password as {string}', async function (password) {
-    await page.locator('#password').fill(password)
+  Given('User enters the username as {string}',{ timeout: 60000 }, async function (username) {
+    await pageFixture.page.locator("//input[@placeholder='Username']").fill(username)
+
+  });
+
+  Given('User enters the password as {string}',{ timeout: 60000 }, async function (password) {
+    await pageFixture.page.locator("//input[@placeholder='Password']").fill(password)
 
   });
 
 
   When('User clicks on the login button', async function () {
-    await page.click('button[type="submit"]');
+    await pageFixture.page.click("//span[text()='Login']");
 
   });
-  Then('Login should be success', async function () {
-    await page.waitForSelector('#flash');
-    const message = await page.textContent('#flash');
-    expect(message).toContain('You logged into a secure area!');
-    await browser.close();
+  Then('Login should be success',{ timeout: 60000 }, async function () {
+    await expect(pageFixture.page.locator("//mat-icon[text()='favorite']")).toBeVisible();
 
   });
 
-  Then('Login should fail', async function () {
-    await page.waitForSelector('#flash');
-    const message = await page.textContent('#flash');
-    expect(message).toContain('Your password is invalid!');
-    await browser.close();
-
-  });
