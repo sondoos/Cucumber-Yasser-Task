@@ -13,7 +13,9 @@ Before(async function () {
     await page.setViewportSize({ width: 1920, height: 1080 });
 });
 
-After(async function () {
+After(async function ({pickle}) {
+    const img = await pageFixture.page.screenshot({ path: `./test-results/screenshots/${pickle.name}.png`, type: "png" });
+    await this.attach(img,"image/png");
     await pageFixture.page.click("//a[text()='Log out']");
     await pageFixture.page.close;
     await browser.close();
