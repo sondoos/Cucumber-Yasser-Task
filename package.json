@@ -16,6 +16,7 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@faker-js/faker": "^8.4.1"
+    "@faker-js/faker": "^8.4.1",
+    "fs-extra": "^11.2.0"
   }
 }
